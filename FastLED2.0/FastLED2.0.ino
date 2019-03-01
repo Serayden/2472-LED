@@ -127,24 +127,7 @@ void loop() {
     FastLED.show ();
 
   }
-  //    if (a = 24) { a == 0 ;}
-  //    if (b = 24) { b == 0 ;}
-  //    if (c = 24) { c == 0 ;}
-  //    if (d = 24) { d == 0 ;}
-  //  leds[d] = CRGB::Black;
-  //  FastLED.show ();
-  // }
   //
 
 
-  //for (int i = LowerValue; i <= UpperValue; i+=2){
-  //leds[i] = CRGB::Color11;
-  //FastLED.show();
-  //delay(LongDelay);
-  //}
-  //for (int j = UpperValue; j>= LowerValue; j--){
-  //leds[j] = CRGB::Color12;
-  //FastLED.show();
-  //delay(ShortDelay);
-  //}
 }
