@@ -3,6 +3,7 @@
 #define LED_PIN 13
 #define NUM_LEDS 24
 #define Talon 11 //Talon Pin
+#define Button_Pin 10
 
 
 int TV; //Talong Value
@@ -32,32 +33,55 @@ CRGB leds[NUM_LEDS];
 #define LongDelay 200
 
 //defines Color1
-#define Color1 Red
-#define Color2 Blue
+int Color1;
+int Color2;
+#define Red 255, 0, 0
+#define Blue 0, 0, 255
 
 void setup() {
   // put your setup code here, to run once:
   FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LEDS) ; //defines the type of led strip
   Serial.begin(9600);
   pinMode (Talon, INPUT);
+  pinMode (Button_Pin, INPUT_PULLUP);
+  int Button = digitalRead(Button_Pin);
+  if (Button == HIGH) {
+    Color1 = Red;
+    Color2 = Blue;
+  }
+  else {
+    Color1 = Blue;
+    Color2 = Red;
+  }
+
   a = 0;
   b = 1;
   c = 12;
   d = 13;
 
   for (int i = 0; i <= 23; i++) {
-    leds[i] = CRGB::Color1;
+    leds[i] = CRGB(Color1);
     FastLED.show();
   }
 
-  leds[a] = CRGB::Color2;
-  leds[b] = CRGB::Color2;
-  leds[c] = CRGB::Color2;
-  leds[d] = CRGB::Color2;
-  FastLED.show();
+  //  leds[a] = CRGB(Color2);
+  //  leds[b] = CRGB(Color2);
+  //  leds[c] = CRGB(Color2);
+  //  leds[d] = CRGB(Color2);
+  //  FastLED.show();
 }
 
 void loop() {
+  int Button = digitalRead(Button_Pin);
+  if (Button == HIGH) {
+    Color1 = Red;
+    Color2 = Blue;
+  }
+  else {
+    Color1 = Blue;
+    Color2 = Red;
+  }
+
   TV = pulseIn (Talon, LOW); //accepts input value from RIO
   if (TV <= P101 && TV >= P150) {
     TD = map(TV, P101, P150, LongDelay, ShortDelay); //maps values from Rtalon into delays Forward
@@ -69,11 +93,16 @@ void loop() {
 
 
   if (TV <= P49 && TV >= P151) {     //for driving movement
-
+    leds[a] = CRGB(Color2);
+    leds[b] = CRGB(Color2);
+    leds[c] = CRGB(Color2);
+    leds[d] = CRGB(Color2);
+    FastLED.show();
+    
     if (TV <= P101) {    //Forward LED movements
       delay (TD);
-      leds[a] = CRGB::Color1;
-      leds[c] = CRGB::Color1;
+      leds[a] = CRGB(Color1);
+      leds[c] = CRGB(Color1);
       b ++;
       c ++;
       a ++;
@@ -91,15 +120,15 @@ void loop() {
         d = 0;
         return;
       }
-      leds[b] = CRGB::Color2;
-      leds[d] = CRGB::Color2;
+      leds[b] = CRGB(Color2);
+      leds[d] = CRGB(Color2);
       FastLED.show ();
     }
 
     if (TV >= P99) {    //Reverse LED movements
       delay (TD);
-      leds[b] = CRGB::Color1;
-      leds[d] = CRGB::Color1;
+      leds[b] = CRGB(Color1);
+      leds[d] = CRGB(Color1);
       a --;
       b --;
       c --;
@@ -117,8 +146,8 @@ void loop() {
         d = 23;
         return;
       }
-      leds[a] = CRGB::Color2;
-      leds[c] = CRGB::Color2;
+      leds[a] = CRGB(Color2);
+      leds[c] = CRGB(Color2);
       FastLED.show ();
     }
 
